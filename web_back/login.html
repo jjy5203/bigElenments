@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
+<!-- <style>
+    div {
+     border: 1px solid #f00;
+    }
+</style> -->
 
 <body>
     <div class="main_wrap">
@@ -29,8 +34,104 @@
             </form>
         </div>
 
-    </div> 
+    </div>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script>
+        $(function () {
 
+
+
+            $('.input_txt').on('focus', function () {
+                $(this).val('');
+
+                $(this).css({
+                    transform: 'scale(1.1)',
+                })
+            })
+
+            $('.input_txt').on('blur', function () {
+                var userName = $('.input_txt').val();
+                $(this).css({
+                    transform: 'scale(1)',
+                })
+                var regP = new RegExp(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/);
+                var regE = new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
+                if (regP.test(userName) || regE.test(userName)) {
+                    $(this).css({
+                        borderColor: 'green',
+                    });
+
+                } else {
+                    $(this).css({
+                        borderColor: 'red',
+                    });
+
+
+                }
+            })
+
+
+            $('.input_pass').on('focus', function () {
+                $(this).val('');
+                $(this).after('');
+                $(this).css({
+                    transform: 'scale(1.1)',
+                })
+            })
+
+            $('.input_pass').on('blur', function () {
+                $(this).css({
+                    transform: 'scale(1)',
+                })
+                var password = $('.input_pass').val().trim();
+                var reg = new RegExp(/^\d{6,}$/);
+                if (reg.test(password)) {
+                    $(this).css({
+                        borderColor: 'green',
+                    });
+
+                } else {
+                    $(this).css({
+                        borderColor: 'red',
+                    });
+
+                }
+            })
+
+
+            $('.input_sub').on('click', function (e) {
+                e.preventDefault();
+                var user_name = $('.input_txt').val().trim();
+                var password = $('.input_pass').val().trim();
+                $.ajax({
+                    type: "post",
+                    url: "https://autumnfish.cn/big/admin/login",
+                    data: {
+                        user_name: user_name,
+                        password: password
+                    },
+                    dataType: "json",
+                    success: function (re) {
+                        console.log(re);
+                        if(re.code==200){
+                            window.location.href='./index.html'
+
+                        }else{
+                            
+                        }
+
+                    }
+                });
+
+
+
+
+            })
+
+
+        })
+
+    </script>
 </body>
 
 </html>
