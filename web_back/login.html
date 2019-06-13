@@ -9,12 +9,9 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
-<!-- <style>
-    div {
-     border: 1px solid #f00;
-    }
-</style> -->
+
 
 <body>
     <div class="main_wrap">
@@ -35,12 +32,29 @@
         </div>
 
     </div>
+    <!-- 弹出框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+                </div>
+                <div class="modal-body">
+                    曹尼玛 傻逼 密码或账号错误
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script>
         $(function () {
-
-
-
             $('.input_txt').on('focus', function () {
                 $(this).val('');
 
@@ -113,11 +127,13 @@
                     dataType: "json",
                     success: function (re) {
                         console.log(re);
-                        if(re.code==200){
-                            window.location.href='./index.html'
+                        if (re.code == 200) {
+                            window.location.href = './index.html'
 
-                        }else{
-                            
+                        } else {
+                            $('#myModal').modal({
+                                keyboard: false
+                            })
                         }
 
                     }
