@@ -121,9 +121,15 @@ body{
 }
 .input_hint {
     position: absolute;
-    right: -80px;
-    
+    right: 60px;
+    color: red;
     top: 7px;
+}
+.input_pas {
+    position: absolute;
+    right: 75px;
+    color: red;
+    top: 70px;
 }
 @keyframes mymove
 {

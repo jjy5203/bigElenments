@@ -20,7 +20,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <span style="white-space:pre;">欢迎&nbsp;&nbsp;李思思</span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -151,6 +151,7 @@
     </script>
     <script>
         $(function () {
+            // 点击退出事件
             $('#exit').on('click', function () {
                 $('#myModal').modal({
                     keyboard: false
@@ -182,11 +183,26 @@
                     }
 
                 })
-
-
-
             })
+
+            // 页面一开始加载个人信息
+            function getProsnDate() {
+                $.ajax({
+                    type: "get",
+                    url: "http://localhost:8000/admin/getuser ",
+
+
+                    success: function (re) {
+                        $('.user_info span').text(`欢迎         ${re.data.nickname}`);
+                        $('.user_info img ,.user_center_link img').attr('src', re.data.user_pic);
+                    }
+                });
+
+            }
+            getProsnDate();
+
         })
+
     </script>
 </body>
 

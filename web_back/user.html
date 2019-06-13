@@ -22,24 +22,24 @@
         <div class="container-fluid common_con">
             <form class="form-horizontal article_form">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">用户名称：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label username">用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="李思思">
+                        <input type="text" class="form-control" id="inputEmail0" value="李思思">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">昵称：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label nickname">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="思思">
+                        <input type="text" class="form-control" id="inputEmail1" value="思思">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label  email">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="lisisi@126.com">
+                        <input type="text" class="form-control" id="inputEmail2" value="lisisi@126.com">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
@@ -49,13 +49,13 @@
                 </div>
 
                 <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="inputEmail3" value="12345678">
-                        </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label password">密码：</label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control" id="inputEmail3" value="12345678">
                     </div>
-               
-    
+                </div>
+
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-success">修改</button>
@@ -64,7 +64,37 @@
             </form>
         </div>
     </div>
+    <script>
 
+        // 获取用户信息 自动填写到指定位置
+        function getUserData(){
+            $.ajax({
+                type: "get",
+                url: "http://localhost:8000/admin/userinfo_get",
+                success: function (re) {
+                    console.log(re);
+                    for(var key in re.data){
+                        $('.input.'+key).val(re.data[key])
+                    }
+                    $('img .user_pic').attr('src',re.data.user_pic)
+                }
+
+            });
+        }
+        getUserData();
+
+
+        // 图片预加载
+
+        $(function () {
+            $("#exampleInputFile").change(function () {
+                var icon = this.files[0];
+                var url = URL.createObjectURL(icon);
+                $('.user_pic').attr('src', url)
+            })
+        })
+
+    </script>
 </body>
 
 </html>
