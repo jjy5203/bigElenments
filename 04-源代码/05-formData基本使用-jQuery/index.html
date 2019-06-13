@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <input type="text" name="username"> <br>
+        <input type="text" name="nickname"> <br>
+        <input type="text" name="email"><br>
+        <input type="file" name="user_pic"><br>
+        <input type="password" name="password"><br>
+    </form>
+    <button id="btn">点我修改</button>
+
+    <script src="./jquery-1.12.4.min.js"></script>
+    <script>
+        $(function () {
+            //给按钮设置点击事件
+            $('#btn').on('click', function () {
+                //使用formData来获取form表单里面的所有数据.
+                var formData = new FormData($('form')[0]); //创建formData的时候,用的form表单要是一个dom对象才可以
+
+                //发送ajax请求
+                $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:8000/admin/userinfo_edit',
+                    data: formData,
+                    //下面这句话的意思是不要给我设置请求头.因为我这里发送数据使用的是formData,不需要设置请求头
+                    contentType:false,
+                    //下面这句话的意思是不要把我传递的参数转成key=value这种格式的字符串.
+                    processData:false,
+                    success: function (backData) {
+                        console.log(backData);
+                    }
+                });
+
+            });
+        });
+    </script>
+</body>
+
+</html>
