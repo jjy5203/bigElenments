@@ -20,14 +20,24 @@
             <div class="copyright">CopyRight © 2019 深圳百秀信息技术股份有限公司<br>All Rights Reserved</div>
         </div>
 
-        <div class="login_form_con">
+        <div class="login_form_con" id="dengru">
             <div class="login_title"></div>
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
+                <input type="text" class="input_txt" placeholder="邮箱/手机号"><span class="input_hint" style="display: none">用户名格式错误</span>
+                
                 <input type="password" class="input_pass" placeholder="密码">
                 <input type="submit" class="input_sub" value="登 录">
+                <input type="login" class="input_log" value="注册账号" style="text-align: center;margin-top:20px">
+                <div class="quick_login">
+                    <a href="#" class="kjdr" id="qq"><span class="qqdr">QQ</span></a>
+                    
+                    <a href="#" class="kjdr" id="wb"><span class="qqdr">微博</span></a>
+                    <a href="#" class="kjdr" id="wx"><span class="qqdr">微信</span></a>
+                    <a href="#" class="kjdr" id="zfb"><span class="qqdr">支付宝</span></a>
+                    <a href="#" class="kjdr" id="sj"><span class="qqdr">手机号</span></a>
+                </div>
             </form>
         </div>
 
@@ -51,64 +61,103 @@
             </div>
         </div>
     </div>
+
+    <!-- 会员注册 -->
+    <div class="login_form_con" style="display:none" id="zhuce">
+        <div class="login_title"></div>
+        <h2 style="text-align: center">新用户注册账号</h2>
+        <form class="login_form">
+            <i class="iconfont icon-user"></i>
+            <i class="iconfont icon-key"></i>
+            <input type="text" class="input_txt" placeholder="用户名" >
+            <input type="text" class="input_txt" placeholder="邮箱/手机号">
+            <p id="hint03"></p>
+            <input type="password" class="input_pass" placeholder="密码">
+            <input type="password" class="input_pass" placeholder="确认密码">
+            <input type="button" class="input_sub02" value="返回首页登入" id="sub02" style="margin-top: 20px">
+
+        </form>
+    </div>
+
+
+
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script>
         $(function () {
             $('.input_txt').on('focus', function () {
-                $(this).val('');
-
+                var value = $(this).val().trim();
                 $(this).css({
                     transform: 'scale(1.1)',
+                    borderColor: '#19b9e7',
                 })
-            })
-
-            $('.input_txt').on('blur', function () {
-                var userName = $('.input_txt').val();
-                $(this).css({
-                    transform: 'scale(1)',
-                })
-                var regP = new RegExp(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/);
-                var regE = new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
-                if (regP.test(userName) || regE.test(userName)) {
-                    $(this).css({
-                        borderColor: 'green',
-                    });
-
-                } else {
-                    $(this).css({
-                        borderColor: 'red',
-                    });
-
-
+                if (value != '') {
+                    $(this).val('');
+              
                 }
             })
 
+            $('.input_txt').on('blur', function () {
+
+                var userName = $('.input_txt').val();
+                $(this).css({
+                    transform: 'scale(1)',
+                    borderColor: '#fff',
+
+                })
+                if (userName !='') {
+
+                    var regP = new RegExp(/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/);
+                    var regE = new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
+                    if (regP.test(userName) || regE.test(userName)) {
+                        $(this).css({
+                            borderColor: 'green',
+                        });
+
+                    } else {
+                        $(this).css({
+                            borderColor: 'red',
+                        });
+                        $('.input_hint').show();
+                        
+
+
+                    }
+                }
+            })
+          
 
             $('.input_pass').on('focus', function () {
                 $(this).val('');
-                $(this).after('');
+
                 $(this).css({
                     transform: 'scale(1.1)',
+                    borderColor: '#19b9e7',
+
                 })
             })
 
             $('.input_pass').on('blur', function () {
                 $(this).css({
                     transform: 'scale(1)',
+                    borderColor: '#fff',
+
+
                 })
                 var password = $('.input_pass').val().trim();
                 var reg = new RegExp(/^\d{6,}$/);
-                if (reg.test(password)) {
-                    $(this).css({
-                        borderColor: 'green',
-                    });
+                if (password != '') {
+                    if (reg.test(password)) {
+                        $(this).css({
+                            borderColor: 'green',
+                        });
 
-                } else {
-                    $(this).css({
-                        borderColor: 'red',
-                    });
+                    } else {
+                        $(this).css({
+                            borderColor: 'red',
+                        });
 
+                    }
                 }
             })
 
@@ -144,7 +193,27 @@
 
             })
 
+            $('.btn-primary').on('click', function () {
+                $('#myModal').modal('hide');
+                $('.input_txt,.input_pass').val('');
+                $('.input_txt,.input_pass').css({
+                    borderColor: '#fff',
+                });
 
+            })
+
+
+
+            // 注册页面
+            //打开会员注册
+            $('.input_log').on('click', function () {
+                $('#dengru').hide();
+                $('#zhuce').show();
+            })
+            $('#sub02').on('click', function () {
+                $('#dengru').show();
+                $('#zhuce').hide();
+            })
         })
 
     </script>

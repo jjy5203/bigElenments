@@ -34,7 +34,8 @@ body{
     margin-left:-200px;
     margin-top:-155px;
     width:400px;
-    height:310px;
+   
+    
     background-color: #edeff0;
 }
 
@@ -47,20 +48,20 @@ body{
     font-size:16px;
     color:#999;
     left:46px;
-    top:12px;
+    top:9px;
 }
 .login_form .icon-key{
     position:absolute;
     font-size:18px;
     color:#999;
     left:46px;
-    top:78px;
+    top:72px;
 }
 .login_title{
     height:60px;
     background:url('../images/login_title.png') center center no-repeat #fff;
 }
-.input_txt,.input_pass,.input_sub{
+.input_txt,.input_pass,.input_sub,.input_log,.input_sub02 {
     display:block;
     width:334px;
     height:37px;
@@ -69,9 +70,11 @@ body{
     border:1px solid #ddd;
     margin:27px auto 0;
     outline:none;
+    
 }
-.input_sub{
+.input_sub,.input_log,.input_sub02{
     margin-top:40px;
+    margin-bottom: 40px;
     height:42px;
     background-color: #19b9e7;
     text-indent:0px;
@@ -82,7 +85,51 @@ body{
 .input_sub:hover{
     background-color: #08a0cc;
 }
+.input_sub02:hover{
+    background-color: #08a0cc;
+}
+.quick_login {
+    height: 64px;
+    margin-bottom: 20px;
 
+    
+}
+.kjdr {
+   float: left;
+    width: 64px;
+    height: 64px;
+   margin-left: 13px;
+   margin-bottom: 10px;
+   margin-top: -15px;
+   background: url('../images/qq32.png');
+   background-size: contain;
+  position: relative;
+
+}
+.qqdr {
+    position: absolute;
+    left: 50%;
+    transform: translate(-40%);
+    top: 65px;
+    font-size: 10px;
+    
+}
+.kjdr:hover {
+   
+   transform: scale(1.2)
+   
+}
+.input_hint {
+    position: absolute;
+    right: -80px;
+    
+    top: 7px;
+}
+@keyframes mymove
+{
+from {transform: scale(0.95);};
+to {transform:scale(1.05);}
+}
 .sider{
     position:fixed;
     left:0;
