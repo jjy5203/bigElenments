@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -24,34 +25,39 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label username">用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail0" value="李思思">
+                        <input type="text" class="form-control username" id="inputEmail0" name="username" value="李思思">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label nickname">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail1" value="思思">
+                        <input type="text" class="form-control nickname" id="inputEmail1" name="nickname" value="思思">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label  email">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail2" value="lisisi@126.com">
+                        <input type="text" class="form-control email" id="inputEmail2" name="email"
+                            value="lisisi@126.com">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
-                        <img src="images/2.jpg" alt="" class="user_pic">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/2.jpg" alt="" class="user_pic" style="border-radius: 50%">
+                        <br>
+                        <label for="exampleInputFile"><img src="./images/文件_看图王.jpg" alt="" width="50px" style="    margin-left: 0;"><span style="line-height: 50px">提交文件</span></label>
+                        
+                        <input type="file" id="exampleInputFile" name="user_pic" style="display: none">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label password">密码：</label>
                     <div class="col-sm-4">
-                        <input type="password" class="form-control" id="inputEmail3" value="12345678">
+                        <input type="password" class="form-control password" id="inputEmail3" name="password"
+                            value="12345678">
                     </div>
                 </div>
 
@@ -64,35 +70,133 @@
             </form>
         </div>
     </div>
+
+    <!-- 弹出框 修改完成 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+                </div>
+                <div class="modal-body">
+                    修改成功
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹出框 错误 -->
+    <div class="modal fade" id="myModal02" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel02">温馨提示</h4>
+                </div>
+                <div class="modal-body">
+                    错误 修改未完成
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
 
-        // 获取用户信息 自动填写到指定位置
-        function getUserData(){
-            $.ajax({
-                type: "get",
-                url: "http://localhost:8000/admin/userinfo_get",
-                success: function (re) {
-                    console.log(re);
-                    for(var key in re.data){
-                        $('.input.'+key).val(re.data[key])
-                    }
-                    $('img .user_pic').attr('src',re.data.user_pic)
-                }
 
-            });
-        }
-        getUserData();
-
-
-        // 图片预加载
 
         $(function () {
-            $("#exampleInputFile").change(function () {
+
+            // 获取用户信息 自动填写到指定位置
+            function getUserData() {
+                $.ajax({
+                    type: "get",
+                    url: "http://localhost:8000/admin/userinfo_get",
+                    success: function (re) {
+                        console.log(re);
+
+                        // $('.username').val(re.data.username)
+                        // console.log(re.data.username);
+
+
+                        for (var key in re.data) {
+
+                            $('input.' + key).val(re.data[key])
+                        }
+                        $('img.user_pic').attr('src', re.data.user_pic)
+                    }
+
+                });
+            }
+
+            getUserData();
+
+            // 图片预加载
+
+
+
+            $("#exampleInputFile").change(function (e) {
+                e.preventDefault();
                 var icon = this.files[0];
                 var url = URL.createObjectURL(icon);
                 $('.user_pic').attr('src', url)
             })
         })
+
+        // 编辑用户信息,使用formDate提交
+        $('.btn-success').on('click', function (e) {
+            e.preventDefault();
+            var formData = new FormData($('form')[0]);
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8000/admin/userinfo_edit",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res.code == 200) {
+                        $('#myModal').modal({
+                            keyboard: false,
+                        });
+
+
+
+                    } else {
+                        $('#myModal02').modal({
+                            keyboard: false,
+                        })
+
+                    }
+
+                }
+            });
+
+            // 弹出框确认点击按钮事件
+
+            $('.btn-primary').on('click', function () {
+                $('#myModal').modal('hide');
+                $('#myModal02').modal('hide');
+                // location.reload()
+                // window.location.href='./index.html'
+                // self.opener.location.reload();
+
+
+
+            })
+
+
+
+        })
+
 
     </script>
 </body>
