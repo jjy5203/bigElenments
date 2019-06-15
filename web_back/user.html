@@ -47,8 +47,9 @@
                     <div class="col-sm-10">
                         <img src="images/2.jpg" alt="" class="user_pic" style="border-radius: 50%">
                         <br>
-                        <label for="exampleInputFile"><img src="./images/文件_看图王.jpg" alt="" width="50px" style="    margin-left: 0;"><span style="line-height: 50px">提交文件</span></label>
-                        
+                        <label for="exampleInputFile"><img src="./images/文件_看图王.jpg" alt="" width="50px"
+                                style="    margin-left: 0;"><span style="line-height: 50px">提交文件</span></label>
+
                         <input type="file" id="exampleInputFile" name="user_pic" style="display: none">
                     </div>
                 </div>
@@ -111,8 +112,6 @@
     </div>
     <script>
 
-
-
         $(function () {
 
             // 获取用户信息 自动填写到指定位置
@@ -121,12 +120,9 @@
                     type: "get",
                     url: "http://localhost:8000/admin/userinfo_get",
                     success: function (re) {
-                        console.log(re);
-
+                        // console.log(re);
                         // $('.username').val(re.data.username)
                         // console.log(re.data.username);
-
-
                         for (var key in re.data) {
 
                             $('input.' + key).val(re.data[key])
@@ -140,8 +136,6 @@
             getUserData();
 
             // 图片预加载
-
-
 
             $("#exampleInputFile").change(function (e) {
                 e.preventDefault();
@@ -162,14 +156,11 @@
                 contentType: false,
                 processData: false,
                 success: function (res) {
-                    console.log(res);
+                    // console.log(res);
                     if (res.code == 200) {
                         $('#myModal').modal({
                             keyboard: false,
                         });
-
-
-
                     } else {
                         $('#myModal02').modal({
                             keyboard: false,
@@ -186,15 +177,20 @@
                 $('#myModal').modal('hide');
                 $('#myModal02').modal('hide');
                 // location.reload()
-                // window.location.href='./index.html'
-                // self.opener.location.reload();
+
+                $.ajax({
+                    type: "get",
+                    url: "http://localhost:8000/admin/userinfo_get",
+                    success: function (re) {
+                        console.log(re);
+                    
 
 
+                    }
+
+                })
 
             })
-
-
-
         })
 
 
