@@ -36,7 +36,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs ">删除</a>
                         </td>
                     </tr>
 
@@ -117,7 +117,7 @@
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-del">
                     修改成功
                 </div>
                 <div class="modal-footer">
@@ -148,16 +148,38 @@
     </div>
 
     <script>
+
+        // 封装获取文章分类函数
+
+        function getArticle() {
+            // 获取文章分类
+            $.ajax({
+                type: "get",
+                url: "http://localhost:8000/admin/category_search",
+                success: function (re) {
+                    console.log(re);
+                    var res = template('tmp', re);
+                    $('tbody').html(res)
+                }
+            });
+
+        }
+
+        getArticle();
+
+
         $('#addModal').modal({
+
             show: false,
             backdrop: false
         });
 
         $('#model_shutoff').click(function () {
-            alert('shutoff');
+
             $('#addModal').modal('hide');
         });
 
+        // 增加文章分类事件
         $('#model_add').click(function () {
             var name = $('#recipient-name').val().trim();
             var slug = $('#recipient-otherName').val().trim();
@@ -172,35 +194,69 @@
                 },
                 dataType: 'json',
                 success: function (re) {
-                    console.log(re);
-                    if (re.code == 200) {
-                        alert('sucess')
-                        // $('#myModal01').modal({
-                        //     keyboard: false
-                        // })
 
-                    } 
-                    // else {
-                    //     $('#myModal02').modal({
-                    //         keyboard: false
-                    //     });
-                    // }
+                    if (re.code == 200) {
+                        // alert('sucess')
+                        $('#myModal01').modal({
+                            keyboard: false
+                        });
+                        $('.modal-del').text('是否确认修改?')
+
+                    }
+                    else {
+                        $('#myModal02').modal({
+                            keyboard: false
+                        });
+                    }
 
                 }
             });
         });
 
-        $('.category_table').delegate('a', 'click', function () {
+
+        // 删除事件  要用事件委托
+        $('tbody').on('click', '.btn-del', function () {
+            // $('#myModal01').modal({
+            //     keyboard: false
+            // });
+            // $('.modal-del').text('是否删除?');          
+            $(this).parent().parent().remove();
+
+
+        })
+
+
+        // 编辑事件
+        // 自动填充编辑事件的空格
+
+        // $('.category_table').delegate('a', 'click', function () {
+        //     alert('cc')
+        //     if ($(this).hasClass('btn-info')) {
+        //         $('#addModal .modal-title').html('修改分类名称');
+        //         $('#addModal').modal('show');
+        //     }
+        // })
+        $('tbody').on('click', '.btn-edit', function () {
+            var that= $(this)
+            var name =that.parent().prev().prev();
+            var slug =that.parent.prev();
+            console.log(name );
+            console.log(slug );
+            
             if ($(this).hasClass('btn-info')) {
                 $('#addModal .modal-title').html('修改分类名称');
+                $('#addModal .btn-primary').html('保存').addClass('btn-s');
+                $('#recipient-name').val();
+
                 $('#addModal').modal('show');
             }
         })
 
         // 弹出框确认按键事件
         $('.btn-primary').on('click', function () {
-            $('#myModal').modal('hide');
+            $('#myModal01').modal('hide');
             $('#myModal02').modal('hide');
+
             $.ajax({
                 type: "get",
                 url: "http://localhost:8000/admin/category_search",
@@ -212,25 +268,10 @@
 
                 }
             });
-            // history.go(0);
+
+
         })
 
-        // 点击删除事件
-        $('.btn-danger').on('click',function(){
-            // var id=$(this).attr('id')
-        
-            
-            // $.ajax({
-            //     type: "post",
-            //     url: "http://localhost:8000/admin/category_delete",
-            //     data: id,
-            //     dataType: "dataType",
-            //     success: function (re) {
-            //         console.log(re);
-                    
-            //     }
-            // });
-        })
     </script>
 
     <!-- 导入引擎模板 -->
@@ -241,29 +282,15 @@
         <td>{{$value.name}}</td>
         <td>{{$value.slug}}</td>
         <td class="text-center">
-            <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});" class="btn btn-info btn-xs">编辑</a>
-            <a href="javascript:deleteTr( {{$value.id}} );" class="btn btn-danger btn-xs "  id="{{$value.id}}" >删除</a>
+            <a href="javascript:void(0)" class="btn btn-info btn-xs btn-edit">编辑</a>
+            <a href="javascript:void(0)" class="btn btn-danger btn-xs btn-del "  data-id="{{$value.id}}" >删除</a>
         </td>
     </tr>
     {{/each}}
 </script>
     <script>
-        $(function () {
 
-            // 获取文章分类
 
-            $.ajax({
-                type: "get",
-                url: "http://localhost:8000/admin/category_search",
-
-                success: function (re) {
-                    console.log(re);
-                    var res = template('tmp', re);
-                    $('tbody').html(res)
-
-                }
-            });
-        })
     </script>
 
 
