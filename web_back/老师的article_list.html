@@ -32,8 +32,8 @@
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
                             <option value="">所有状态</option>
-                            <option value="drafted">草稿</option>
-                            <option value="published">已发布</option>
+                            <option >草稿</option>
+                            <option >已发布</option>
                         </select>
                         <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
                     </form>
@@ -307,37 +307,35 @@
                 if (backData.code == 200) {
                     //通过模板引擎把返回的数据渲染到页面
                     //调用模板引擎的方法
-                    var resHtml = template('tmp_article_cate', backData);
+                    var resHtml = template('tmp_article_cate',backData);
                     $('#selCategory').html(resHtml);
                 }
             }
         });
-
+    
 
         //点击筛选按钮,发送ajax请求,获取对应类型的所有文章.
-        $('#btnSearch').on('click', function (e) {
+        $('#btnSearch').on('click',function(e){
             e.preventDefault();
             //获取文章类别和 文章状态
             var type = $('#selCategory').val();
             var state = $('#selStatus').val();
             console.log(type);
             console.log(state);
-            
             //发送ajax请求.
             $.ajax({
                 //type:'get', //如果type是get可以省略不写.因为默认就是get
-                type:'get',
-                url: 'http://localhost:8000/admin/search',
-                data: {
-                    key: '',
-                    type: type,
-                    state: state,
-                    page: 1,
-                    perpage: 5
-                }, success: function (backData) {
+                url:'http://localhost:8000/admin/search',
+                data:{
+                    key:'',
+                    type:type,
+                    state:state,
+                    page:1,
+                    perpage:5
+                },success:function(backData){
                     console.log(backData);
-                    if (backData.code == 200) {
-                        var resHtml = template('tmp_article_list', backData);
+                    if(backData.code == 200){
+                        var resHtml = template('tmp_article_list',backData);
                         $('tbody').html(resHtml);
                     }
                 }
@@ -345,11 +343,10 @@
         });
 
 
-      
+        $('#btnSearch').click();
 
 
     </script>
-
 
 </body>
 
