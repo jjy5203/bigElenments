@@ -28,20 +28,20 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input type="text" class="form-control" id="inputEmail3" name="title" placeholder="文章标题">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <img src="images/pic06.jpg" class="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/pic06.jpg" class="article_cover" height="100px" id="btn-img">
+                        <input type="file" id="exampleInputFile" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" id="opt">
+                        <select class="form-control" id="opt" name="type">
                             <option>类别一</option>
                             <option>类别二</option>
                             <option>类别三</option>
@@ -55,12 +55,11 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" name="date" value="2019-05-17" id="dateinput">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"
-                                    onclick="jeDate('#dateinput',{trigger:false,onClose: false,  isinitVal:true,
-                                       format:'YYYY-MM-DD hh:mm:ss'})"><i
-                                        class="iconfont icon-icondate"></i></button>
+                                <button class="btn btn-default" type="button" id="jeDate-btn"
+                                    onclick="jeDate('#dateinput',{trigger:false, format:'YYYY-MM-DD hh:mm:ss', onClose:false, })">
+                                    <i class="iconfont icon-icondate"></i></button>
                             </span>
                         </div>
                     </div>
@@ -69,68 +68,105 @@
                     <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="rich_content" name="content" placeholder="文章内容"
-                            value="文章内容">
+                            >
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="submit" class="btn btn-success btn-change">修改</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <!-- 引擎模板 -->
-    <script id="tmp" type="text/html">
-    {{each data v}}
-    <option>{{v.name}}</option>
-    {{/each}}
-    
+     <!-- 文章类别模板 -->
+     <script id="tmp" type="text/html">
+        <option value="">所有分类</option>
+        {{each data v}}
+        <option value="{{v.id}}">{{v.name}}</option>
+        {{/each}}
     </script>
+
     <script>
-        
-        $(function () {
+        // 图片预览
+        $('#exampleInputFile').on('change', function () {
 
-            // 图片预览
-            $('#exampleInputFile').on('change', function () {
-
-                var icon = this.files[0];
-                var url = URL.createObjectURL(icon);
-                $('.article_cover').attr('src', url)
-            })
-
-            // h获取所有的类别
-            function getClass() {
-                $.ajax({
-
-                    url: "http://localhost:8000/admin/category_search",
-                    success: function (re) {
-                        console.log(re);
-                        if (re.code == 200) {
-                            var res = template('tmp', re);
-                            $('#opt').html(res)
-                        }
-
-                    }
-                });
-            }
-
-            getClass()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            var icon = this.files[0];
+            var url = URL.createObjectURL(icon);
+            $('.article_cover').attr('src', url)
         })
+
+        // h获取所有的类别
+        function getClass() {
+            $.ajax({
+                url: "http://localhost:8000/admin/category_search",
+                success: function (re) {
+                    console.log(re);
+                    if (re.code == 200) {
+                        var res = template('tmp', re);
+                        $('#opt').html(res)
+                    }
+
+                }
+            });
+        }
+
+        getClass()
+
+
+// 获取对应的ID
+        var id = window.location.search.split('=')[1];
+        console.log(id);
+
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8000/admin/search",
+            data: {
+                id: id
+            },
+            success: function (re) {
+                console.log(re);
+                // 修改对应的内容
+                $('#inputEmail3').val(re.data.title);
+                $('#btn-img').attr('src', re.data.cover);
+                $('#opt').val(re.data.type);
+                $('#dateinput').val(re.data.date);
+                $('#rich_content').val(re.data.content)
+            }
+        });
+
+// 修改按键事件
+$('.btn-change').on('click',function(){
+    var title= $('#inputEmail3').val();
+    var cover= $('#btn-img').attr('src');
+    var type =  $('#opt').val();
+    var data =   $('#dateinput').val();
+    var content = $('#rich_content').val();
+            
+               
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8000/admin/article_edit",
+        data: {
+            id:id,
+            title:title,
+            cover:cover,
+            type:type,
+            data:data,
+            content:content
+        },
+        success: function (re) {
+            console.log(re);
+            
+            
+        }
+    });
+
+
+})
+
+
+
     </script>
 </body>
 

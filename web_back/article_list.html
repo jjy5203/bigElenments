@@ -279,8 +279,8 @@
             <td class="text-center">{{v.date}}</td>
             <td class="text-center">{{v.state}}</td>
             <td class="text-center">
-                <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                <a href="javascript:void();" data-id="{{v.id}}" class="btn btn-danger btn-xs btn-del">删除</a>
+                <a href="article_edit.html?={{v.id}}" class="btn btn-default btn-xs">编辑</a>
+                <a href="javascript:void(0);" data-id="{{v.id}}" class="btn btn-danger btn-xs btn-del">删除</a>
             </td>
             </tr>
         {{/each}}
@@ -294,9 +294,9 @@
     </script>
     <script>
         // 设置左侧菜单
-        $('#release_btn').click(function () {
-            window.parent.setMenu(1, 1);
-        })
+        // $('#release_btn').click(function () {
+        //     window.parent.setMenu(1, 1);
+        // })
 
         //一进到这个文章列表 页面,就要加载所有的文章类别出来.
         $.ajax({
@@ -315,22 +315,7 @@
         //声明一个变量,用来记录总的页码.
         var mytotalPage = 10;
 
-        //分页插件的使用.
-        //使用动态获取总页数  的分页插件的方法.
-        var $pagination = $('#pagination-demo');
-        var defaultOpts = {
-            totalPages: mytotalPage,
-            visiblePages: 7,
-            first: '首页',
-            last: '尾页',
-            next: '下一页',
-            prev: '上一页',
-            onPageClick: function (event, page) {
-                //console.log(event); //点击事件.
-                //console.log(page);//点击的页码
-                getArtList(page);
-            }
-        };
+     
 
         // 封装获取文章函数
         function getArtList(page) {
@@ -373,6 +358,23 @@
                 }
             });
         }
+        getArtList(1)
+           //分页插件的使用.
+        //使用动态获取总页数  的分页插件的方法.
+        var $pagination = $('#pagination-demo');
+        var defaultOpts = {
+            totalPages: mytotalPage,
+            visiblePages: 7,
+            first: '首页',
+            last: '尾页',
+            next: '下一页',
+            prev: '上一页',
+            onPageClick: function (event, page) {
+                //console.log(event); //点击事件.
+                //console.log(page);//点击的页码
+                getArtList(page);
+            }
+        };
         //点击筛选按钮,发送ajax请求,获取对应类型的所有文章.
         $('#btnSearch').on('click', function (e) {
             e.preventDefault();
@@ -385,12 +387,7 @@
         $('#btnSearch').trigger('click');
 
         // 删除事件  要用事件委托 因为是动态生成的
-        // $('.btn-del').on('click', function () {
 
-        //     var id = $(this).attr('data-id');
-        //     console.log(id);
-
-        // })
         $('tbody').on('click', 'a.btn-del', function () {
             var that = $(this);
             var id = $(this).attr('data-id');
@@ -412,7 +409,7 @@
         })
 
 
-
+    
 
 
 
